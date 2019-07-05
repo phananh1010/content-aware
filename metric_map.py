@@ -1,6 +1,6 @@
 import numpy as np
 import namespace
-
+import cv2
 
 class mAP:
     def __init__(self):
@@ -178,3 +178,13 @@ class mAP:
         prcurve = self.step4_prcurve_from_accrclist(acc_list, rc_list)
 
         return self.map_from_prcurve(prcurve)
+    
+    def score_from_file(self, filepath, converter, predictor, anno):
+        #ftoken = converter.get_token_from_filepath(filepath)
+        #dtoken = converter.get_dirtoken_from_filetoken(ftoken)
+        image = cv2.imread(filepath, cv2.IMREAD_COLOR)
+        pred = predictor.detect(image)
+        pred_item = converter.convert_prediction_item(pred)
+        score =  self.score(pred_item, anno)
+        
+        return score

@@ -24,7 +24,7 @@ for filepath in ${ROOT_RAW}*.mp4; do
     mkdir ${ROOT_SCALED}${filename/.mp4/}
     
     #another method. First, create uncompressed video, then measure the bitrate
-    ffmpeg -i $filepath -an -c:v copy -segment_time 0.00001 -f segment ${ROOT_SCALED}${filename/.mp4/}/i%0d_x720_b9999.mp4
+    ffmpeg -i $filepath -an -c:v copy -segment_time 0.00001 -f segment ${ROOT_SCALED}${filename/.mp4/}/i%0d.mp4
     
     for segname in ${ROOT_SCALED}${filename/.mp4/}/*.mp4; do
         [ -e "$segname" ] || continue

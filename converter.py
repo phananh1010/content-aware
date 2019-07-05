@@ -14,9 +14,26 @@ class Converter(object):
     
     #some private and popular function, let it be static
     @staticmethod
+    def get_ftoken_from_vidname_and_idx(_vid_dirdict, _vidname, _idx):
+        #TODO: create unique file token from video names and index of image. 
+        #        This is helpful to parse result from script files
+        #INPUT: _vid_dirdict is dirtoken indexed by video named. This is possible since vidname<->ftoken is 1 to 1 mapping
+        #       _vidname is name of the video
+        #       _idx is index of the frame in video (sorted by name)
+        dirtoken = _vid_dirdict[_vidname]
+        
+        return dirtoken + '_{0:06d}'.format(_idx)
+    
+    @staticmethod
     def get_token_from_filepath(_filepath):
+        #input: MUST be path to vid frame (.jpg), not videos (.mp4)
         return '_'.join(re.split('\.|/', _filepath)[-4:-1])
     
+    
+    @staticmethod
+    def get_dirtoken_from_vidpath(_vidpath):
+        #input: must be path to video file (.mp4)
+        return '_'.join(re.split('\.|/', _vidpath)[-3:-1])
     
     @staticmethod
     def get_dirtoken_from_filetoken(_file_token):
@@ -77,7 +94,7 @@ class Converter(object):
             annotation_dict[dtoken][ftoken] = box_list
         return annotation, annotation_dict
     
-    def convert_prediction_item(self, predictions, threshold=0.6):
+    def convert_prediction_item(self, predictions, threshold_confidence=namespace.THRESHOLD_CONFIDENCE):
         #TODO: convert raw prediction tensor from ssd model into customized structure used in mAP measurement
         #input: prediction from SSD model for ONE video frame, tensor shape (1, 21, 200, 4)
         #output: format that will allow calculating mAP {frame_token: [[0, customed_idx_class, confidence, hi, wi, dh, dw]]}
@@ -89,7 +106,7 @@ class Converter(object):
         for idx_vocobj in range(n_objclass):
             for idx_bbox in range(n_bbox):
                 score = float(predictions[0, idx_vocobj, idx_bbox, 0].numpy())
-                if score < threshold:
+                if score < threshold_confidence:
                     continue
                 idx_class = self.convert_VOC_CLASSID_to_CLASSID(idx_vocobj)
                 if idx_class == None:

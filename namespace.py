@@ -8,6 +8,7 @@ MOTORCYCLE = 'motorcycle'
 SHEEP = 'sheep'
 TRAIN = "train"
 DOG = 'dog'
+WATERCRAFT = 'watercraft'
 
 #class structure constant
 CLASS_LIST = {AIRPLANE, BICYCLE, BIRD, BUS, CAR, CAT, MOTORCYCLE, SHEEP, TRAIN, DOG}
@@ -20,6 +21,7 @@ BBOX_MATCH_FP = 'false_positive'
 
 #IOU THRESHOLD
 THRESHOLD_IOU = .5
+THRESHOLD_CONFIDENCE = 0.3
 
 VID_CLASS_DICT = {
                     'n02691156': AIRPLANE,
@@ -49,15 +51,15 @@ VID_CLASS_DICT = {
                     'n02129604': "tiger",
                     'n04468005': TRAIN,
                     'n01662784': "turtle",
-                    'n04530566': "watercraft",
+                    'n04530566': WATERCRAFT,
                     'n02062744': "whale",
-                    'n02391049': "zebra"            }
+                    'n02391049': "zebra"}
 
 VOC_CLASS_DICT = {0: "background",
               1: AIRPLANE,
               2: BICYCLE,
               3: BIRD,
-              4: "boat",
+              4: WATERCRAFT,
               5: "bottle",
               6: BUS,
               7: CAR,
@@ -76,5 +78,12 @@ VOC_CLASS_DICT = {0: "background",
               20: "tvmonitor"
 }
 
-FILEPATH_IMAGENET_ANNOTATION = './imagenet_labels'
-FILEPATH_SSD_WEIGHT = './ssd/weights/ssd300_mAP_77.43_v2.pth'
+FILEPATH_IMAGENET_ANNOTATION = './imagenet_labels'                     #raw annotation IMAGE_NET VID
+FILEPATH_SSD_WEIGHT = './ssd/weights/ssd300_mAP_77.43_v2.pth'          #model weight ssd 300x300
+FILEPATH_LOG_VIDEOMETAINFO = './data/VID_data/log_allvid_metainfo.txt' #videos metainfo (HxW, bitrate, filename)
+FILEPATH_VID_DIRTOKEN_DICT = './data/VID_data/vid_dirtoken_dict'
+
+DIRPATH_VID_FRAMES = './data/VID_data/scaled/'
+DIRPATH_VID_mAP_LINES = './data/VID_data/'
+
+FILETEMPLATE_mAP_LINES = 'mAP_line_{}'
