@@ -5,19 +5,23 @@ import pandas as pd
 import numpy as np
 import requests
 
-
+HOME = '/home/u9167/content_aware/data/YOUTUBE_data/'
 #get list of all youtube id
-df = pd.DataFrame.from_csv('/home/u9167/content_aware/data/YOUTUBE_data/yt_bb_detection_train.csv')
+df = pd.DataFrame.from_csv(HOME + 'yt_bb_detection_train.csv')
 #now extract youtube id_list
 col1 = df.iloc[:,0]
-id_list = list(set(col1.keys()))
+id_list = sorted(list(set(col1.keys())))
+np.random.seed(0)#so that next time we can repeat this experiement
 np.random.shuffle(id_list)
 
 #crawl the website, search for 1920x1080 videos only
 #    then, output the video ID into file
-with open('./data/YOUTUBE_data/youtube_1080_vidlist.txt', 'a') as f:
+print 'begin crawling'
+with open(HOME + 'youtube_1080_vidlist.txt', 'a') as f:
     url_template="http://www.youtube.com/watch?v={}"
-    for vid in id_list:
+    for idx, vid in enumerate(id_list):
+        if idx % 100 == 0:
+            print 'processing {}\t{}'.format(idx, vid)
         url = url_template.format(vid)
         r = requests.get(url=url)
         pos = r.content.find('1920x1080')
