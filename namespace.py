@@ -10,7 +10,7 @@ TRAIN = "train"
 DOG = 'dog'
 WATERCRAFT = 'watercraft'
 
-#class structure constant
+#class structure constant, this is the class existed in VOC, which will be used in our system
 CLASS_LIST = {AIRPLANE, BICYCLE, BIRD, BUS, CAR, CAT, MOTORCYCLE, SHEEP, TRAIN, DOG}
 CLASS_DICT = {AIRPLANE:1, BICYCLE:2, BIRD:3, BUS:4, CAR:5, CAT:6, MOTORCYCLE:7, SHEEP:8, TRAIN:9, DOG:10}
 
@@ -77,6 +77,8 @@ VOC_CLASS_DICT = {0: "background",
               19: TRAIN,
               20: "tvmonitor"
 }
+
+YOUTUBE_CLASS_DICT = {0: 'person', 1: BIRD, 2: BICYCLE, 3: WATERCRAFT, 4: BUS, 5: 'bear', 6: 'cow', 7: CAT, 8: 'giraffe', 9: 'potted plant', 10: 'horse', 11: MOTORCYCLE, 12: 'knife', 13: AIRPLANE, 14: 'skateboard', 15: TRAIN, 16: 'truck', 17: 'zebra', 18: 'toilet', 19: DOG, 20: 'elephant', 21: 'umbrella', 23: CAR}
 
 FILEPATH_IMAGENET_ANNOTATION = './imagenet_labels'                     #raw annotation IMAGE_NET VID
 FILEPATH_SSD_WEIGHT = './ssd/weights/ssd300_mAP_77.43_v2.pth'          #model weight ssd 300x300
