@@ -1,8 +1,9 @@
+from xml.etree import ElementTree as ET
 import namespace
 import copy
 import re
 
-class Converter(object):
+class ImageNetConverter(object):
     #two main functionality: 
     #1. convert raw annotation to customed annotation
     #2. convert ssd prediction to customed annotation
@@ -37,7 +38,7 @@ class Converter(object):
     
     @staticmethod
     def get_dirtoken_from_filetoken(_file_token):
-        #input: a token for a frame or a file. 
+        #input: a token for a frame or a file, input MUST be an filetoken 
         #output: a token for a video or a directory containing those input frame
         #example input: ILSVRC2015_VID_train_0000_ILSVRC2015_train_00119016_000009
         #example output: ILSVRC2015_VID_train_0000_ILSVRC2015_train_00119016
@@ -45,24 +46,28 @@ class Converter(object):
     
     #First functionality, convert raw imagenet ground truth annotation to customed
     
-    def convert_IMAGENET_CLASSID_to_CLASSID(self, _id):
-        #NOTE: VID stand for IMAGE VID dataset
-        #TODO: convert ImageNet ID into our customed Class ID
-        #example: 'n02691156' --> 1
-        if namespace.VID_CLASS_DICT[_id] in namespace.CLASS_LIST:
-            return namespace.CLASS_DICT[namespace.VID_CLASS_DICT[_id]]
-        else: 
-            return None
+
+    def convert_IMAGENET_xmlanno_to(_xml_path):
+        #TODO: convert IMAGENET xml annotation to the list of standard annotation 
+        #          [[0.0, class_idx, confidence, hi, wi, dh, hw]]
+        #INPUT: FILE PATH TO THE XML GROUND TRUTH
+        #OUTPUT: groundtruth list of item: 0, class
+        tree = ET.parse(_xml_path)
+        root = tree.getroot()
+        w, h = map(float, (root.find('size').find('width').text, root.find('size').find('height').text))
+
+        result = []
+        for obj in root.iter('object'):
+            obj_id = int(obj.find('trackid').text)
+            class_id = obj.find('name').text
+            xmax = float(obj.find('bndbox').find('xmax').text)
+            xmin = float(obj.find('bndbox').find('xmin').text)
+            ymax = float(obj.find('bndbox').find('ymax').text)
+            ymin = float(obj.find('bndbox').find('ymin').text)
+
+            result.append([0.0, class_id, 1.0, xmin/w, ymin/h, xmax/w, ymax/h])
+        return result
             
-    def convert_VOC_CLASSID_to_CLASSID(self, _id):
-        #NOTE: VOC stand for VOC video dataset. 
-        #These ID is output buy SSD model (for now, since SSD is trained on VOC)
-        #TODO: convert VOC ID into our customed Class ID
-        #example: 6 --> 1 (BUS)
-        if namespace.VOC_CLASS_DICT[_id] in namespace.CLASS_LIST:
-            return namespace.CLASS_DICT[namespace.VOC_CLASS_DICT[_id]]
-        else: 
-            return None
     
     def filter_annotation(self, _annotation):
         #we specify a customized list of popular class. 10 class, based on VOC dataset
@@ -94,28 +99,6 @@ class Converter(object):
             annotation_dict[dtoken][ftoken] = box_list
         return annotation, annotation_dict
     
-    def convert_prediction_item(self, predictions, threshold_confidence=namespace.THRESHOLD_CONFIDENCE):
-        #TODO: convert raw prediction tensor from ssd model into customized structure used in mAP measurement
-        #input: prediction from SSD model for ONE video frame, tensor shape (1, 21, 200, 4)
-        #output: format that will allow calculating mAP {frame_token: [[0, customed_idx_class, confidence, hi, wi, dh, dw]]}
-        #step 1: convert shape (1, 21, 200, 4) to a list of [0, VOC_idx_class, confidence, hi, wi, dh, dw]
-        #step 2: convert [0, VOC_idx_class, confidence, hi, wi, dh, dw] into 
-        
-        result = []
-        _, n_objclass, n_bbox, _ = predictions.shape
-        for idx_vocobj in range(n_objclass):
-            for idx_bbox in range(n_bbox):
-                score = float(predictions[0, idx_vocobj, idx_bbox, 0].numpy())
-                if score < threshold_confidence:
-                    continue
-                idx_class = self.convert_VOC_CLASSID_to_CLASSID(idx_vocobj)
-                if idx_class == None:
-                    #print 'FAILED: ', idx_bbox, idx_vocobj
-                    continue
-                hi, wi, dh, dw = predictions[0, idx_vocobj, idx_bbox, 1:].numpy()
-                result.append([0, idx_class, score, hi, wi, dh, dw])
 
-        #final steps: convert VOC id to customized id
-        return result
     
     

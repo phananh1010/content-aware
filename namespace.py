@@ -1,3 +1,4 @@
+#class names are string to link class id between dataset
 AIRPLANE = 'airplane'
 BICYCLE = 'bicycle'
 BIRD = 'bird'
@@ -9,10 +10,15 @@ SHEEP = 'sheep'
 TRAIN = "train"
 DOG = 'dog'
 WATERCRAFT = 'watercraft'
+PERSON = 'person'
+HORSE = 'horse'
+POTTEDPLANT = 'potted_plant'
+COW = 'cow'
 
 #class structure constant, this is the class existed in VOC, which will be used in our system
-CLASS_LIST = {AIRPLANE, BICYCLE, BIRD, BUS, CAR, CAT, MOTORCYCLE, SHEEP, TRAIN, DOG}
-CLASS_DICT = {AIRPLANE:1, BICYCLE:2, BIRD:3, BUS:4, CAR:5, CAT:6, MOTORCYCLE:7, SHEEP:8, TRAIN:9, DOG:10}
+CLASS_INDEX = ['N/A', AIRPLANE, BICYCLE, BIRD, BUS, CAR, CAT, MOTORCYCLE, SHEEP, TRAIN, DOG, WATERCRAFT, PERSON, HORSE, POTTEDPLANT, COW]
+CLASS_LIST = {AIRPLANE, BICYCLE, BIRD, BUS, CAR, CAT, MOTORCYCLE, SHEEP, TRAIN, DOG, WATERCRAFT, PERSON, HORSE, POTTEDPLANT, COW}
+CLASS_DICT = {AIRPLANE:1, BICYCLE:2, BIRD:3, BUS:4, CAR:5, CAT:6, MOTORCYCLE:7, SHEEP:8, TRAIN:9, DOG:10, WATERCRAFT:11, PERSON:12, HORSE:13, POTTEDPLANT:14, COW:15}
 
 #BBOX MATCHING RESULT CONSTANT
 BBOX_MATCH_FN = 'false_negative'
@@ -65,12 +71,12 @@ VOC_CLASS_DICT = {0: "background",
               7: CAR,
               8: CAT,
               9: "chair",
-              10: "cow",
+              10: COW,
               11: "diningtable",
               12: DOG,
-              13: "horse",
+              13: HORSE,
               14: MOTORCYCLE,
-              15: "person",
+              15: PERSON,
               16: "pottedplant",
               17: SHEEP,
               18: "sofa",
@@ -78,7 +84,9 @@ VOC_CLASS_DICT = {0: "background",
               20: "tvmonitor"
 }
 
-YOUTUBE_CLASS_DICT = {0: 'person', 1: BIRD, 2: BICYCLE, 3: WATERCRAFT, 4: BUS, 5: 'bear', 6: 'cow', 7: CAT, 8: 'giraffe', 9: 'potted plant', 10: 'horse', 11: MOTORCYCLE, 12: 'knife', 13: AIRPLANE, 14: 'skateboard', 15: TRAIN, 16: 'truck', 17: 'zebra', 18: 'toilet', 19: DOG, 20: 'elephant', 21: 'umbrella', 23: CAR}
+YOUTUBE_CLASS_DICT = {0: PERSON, 1: BIRD, 2: BICYCLE, 3: WATERCRAFT, 4: BUS, 5: 'bear', 6: COW, 7: CAT, 8: 'giraffe', 9: POTTEDPLANT, 10: HORSE, 11: MOTORCYCLE, 12: 'knife', 13: AIRPLANE, 14: 'skateboard', 15: TRAIN, 16: 'truck', 17: 'zebra', 18: 'toilet', 19: DOG, 20: 'elephant', 21: 'umbrella', 23: CAR}
+
+DIRPATH_HOME = '/home/u9167/content_aware'
 
 FILEPATH_IMAGENET_ANNOTATION = './imagenet_labels'                     #raw annotation IMAGE_NET VID
 FILEPATH_SSD_WEIGHT = './ssd/weights/ssd300_mAP_77.43_v2.pth'          #model weight ssd 300x300
@@ -88,4 +96,18 @@ FILEPATH_VID_DIRTOKEN_DICT = './data/VID_data/vid_dirtoken_dict'
 DIRPATH_VID_FRAMES = './data/VID_data/scaled/'
 DIRPATH_VID_mAP_LINES = './data/VID_data/'
 
+DIRPATH_SCRIPTS = DIRPATH_HOME + '/' + 'scripts'
+DIRPATH_DATA = DIRPATH_HOME + '/' + 'data'
+DIRPATH_YOUTUBE_DATA = DIRPATH_DATA + '/' + 'YOUTUBE_data'
+DIRPATH_YOUTUBE_VIDEOS = DIRPATH_YOUTUBE_DATA + '/' + 'videos'
+
+FILEPATH_SCRIPTS_GETINFO = DIRPATH_SCRIPTS + '/' + 'get_info.sh'
+
+FILEPATH_YOUTUBE_RAWANNOCSV = DIRPATH_YOUTUBE_DATA + '/' + 'yt_bb_detection_train_filtered.pkl.gz'
+FILEPATH_YOUTUBE_YANNODICT = DIRPATH_YOUTUBE_DATA + '/' + 'yanno_dict'
+FILEPATH_YOUTUBE_VID_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'vid_metainfo.txt'
+
+
+
 FILETEMPLATE_mAP_LINES = 'mAP_line_{}'
+FILETEMPLATE_FRAMEID = '{0:06d}'
