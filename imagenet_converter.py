@@ -1,7 +1,10 @@
 from xml.etree import ElementTree as ET
-import namespace
 import copy
 import re
+
+import namespace
+import log_parser
+
 
 class ImageNetConverter(object):
     #two main functionality: 

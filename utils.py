@@ -64,12 +64,11 @@ def get_vidpath_from_dirpath(_dirpath):
         return _dirpath + '.mp4'
     
 
-def get_filetoken_from_imgpath(_imgpath):
+def get_filetoken_from_imgpath(_vidpath, _imgpath):
         base_path, ext = os.path.splitext(_imgpath) #base_path is filepath with no file extension
         base_imgname = os.path.basename(base_path)  #imgname with no .jpg extention
-        dirpath = os.path.dirname(base_path)   #path to parent directory
-        vidpath = get_vidpath_from_dirpath(dirpath)
-        dtoken = get_dirtoken_from_vidpath(vidpath)
+
+        dtoken = get_dirtoken_from_vidpath(_vidpath)
         ftoken = create_ftoken(dtoken, base_imgname)#note: base_imgname is a number
         
         return ftoken

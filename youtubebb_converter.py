@@ -6,34 +6,66 @@ import re
 
 import utils
 import namespace
+import log_parser
 
 class YoutubeBBConverter(object):
     #TODO: given raw videos and directory structure, 
     #input: csv files with info tuple (vid, time, cid, oid, bbox)
     #output: {vid+cid+oid: {[]}}
     
+    #store the frame per sections, needed for the videos
+    _vidinfo_dict = {}
     
-    
-    def __init__(self):
-        return
+    def __init__(self, vidinfo_dict):
+        LogParser = log_parser.LogParser()
+        self._vidinfo_dict = vidinfo_dict
+        
+        self._arr_rs = namespace.RESOLUTION_LIST
+        self._arr_br = namespace.BITRATE_LIST
+        self._N      = namespace.NO_RESOLUTION_LEVELS
 
-    def remove_refundant_frames(self, vid_dirpath):
+        return
+    
+    def remove_redundant_frames_with_targetdirpath(self, target_dirpath, fps):
+        #TODO: given splitted frames, filter annotated frames, delete the rest
+        #INPUT: target dirpath point to dir contain splitted images
+        # .       fps is frame per seconds
+        #OUTPUT: target dirpath contains only selected images
+
+        #test data: 
+        #vidname = '95Gh1o1M94s+0+1', 
+        #target_dirpath is path to specific bitrate & resolution
+        #ex: namespace.namespace.DIRPATH_YOUTUBE_VIDEOS + '/0/95Gh1o1M94s+0+1/frames_x720_b1024k'
+
+        for img_idx, imgpath in enumerate(sorted(glob.glob(target_dirpath + '/' + '*.jpg'))): 
+            if int(round((img_idx+1) % fps)) == 0 or img_idx == 0:
+                #imgdirpath, imgname_old = os.path.dirname(imgpath), os.path.basename(imgpath)
+                imgname_new = namespace.FILETEMPLATE_FRAMEID.format(int(round((img_idx+1) / fps))) + '.jpg'
+                imgpath_new = target_dirpath + '/' + imgname_new
+                print 'mv {} {}'.format(imgpath, imgpath_new)
+                os.system('mv {} {}'.format(imgpath, imgpath_new))
+        #after all selected image has been moved, now remove redundant images
+        #the redundant images has lenghth of 7, while moved files has length of 6
+        cmdstr_rmv = 'rm {}'.format(target_dirpath + '/' + '???????.jpg')
+        print 'EXECUTE CMD: {}'.format(cmdstr_rmv)
+        os.system(cmdstr_rmv)
+
+    def remove_refundant_frames(self, vid_wildcard):
         #TODO: remove frames not annotated (in .csv files). 
         #        check if frame idx is divisible to 30 or not. If not, remove
         #INPUT: dir path to the folder containing the videos
-        #       #vidpath = namespace.DIRPATH_YOUTUBE_VIDEOS
+        #       #vid_wildcard = namespace.DIRPATH_YOUTUBE_VIDEOS + '/*/*.mp4'
         #OUTPUT: removed frames from specified folders
-        
-        for vidpath in glob.glob(vid_dirpath + '/*/*'):
-            for img_idx, imgpath in enumerate(glob.glob(vidpath + '/*.jpg')): 
-                if img_idx % 30 == 0:
-                    imgdirpath, imgname = os.path.dirname(imgpath), os.path.basename(imgpath)
-                    imgname = namespace.FILETEMPLATE_FRAMEID.format(img_idx/30) + '.jpg'
-                    new_imgpath = imgdirpath + '/' + imgname
-                    print 'mv {} {}'.format(imgpath, new_imgpath)
-                    os.system('mv {} {}'.format(imgpath, new_imgpath))
-            print 'removing {}'.format(vidpath + '/temp*.jpg')
-            os.system('rm {}'.format(vidpath + '/temp*.jpg'))
+        for vidpath in glob.glob(vid_wildcard):
+            vid_dirpath, _ = os.path.splitext(vidpath)  #
+            vidname = os.path.split(vid_dirpath)[1]     #example: 95Gh1o1M94s+0+1
+            for i in range(self._N):
+                rs = self._arr_rs[i]
+                br = self._arr_br[i]
+                target_dirpath = vid_dirpath + '/' + 'frames_x{}_b{}'.format(rs, br)
+                fps = self._vidinfo_dict[vidname][2]
+                print 'PROCESSING: {}'.format(target_dirpath)
+                self.remove_redundant_frames_with_targetdirpath(target_dirpath, fps)
     
     def create_frame_from_vid(self, vid_dirpath):
         #TODO: execute bash script, split videos into frame
@@ -51,7 +83,7 @@ class YoutubeBBConverter(object):
         #go through all mp4 videos in the folder specified by vid_dirpath
         #split the videos, put frames in to folder has same name as the video
         
-        for vidpath in glob.glob(vid_dirpath + '/*/*.mp4'):   
+        for vidpath in glob.glob(vid_dirpath + '/*/*/*.mp4'):   
             dirpath = vidpath.replace('.mp4', '')
             print 'creating directory: {}'.format(dirpath)
             os.system('mkdir {}'.format(dirpath))
@@ -59,6 +91,31 @@ class YoutubeBBConverter(object):
             cmd_split = cmd_split_template.format(vidpath, dirpath)
             os.system(cmd_split)
         self.remove_refundant_frames(vid_dirpath)
+        
+    def create_frame_from_segment(self, vid_dirpath):
+        #TODO: execute bash script, split videos into frame. NOTE: videos segment after converted to different bitrates & resolution
+        #INPUT: vid_dirpath is folder contains all youtube videos
+        #OUPUT: frames in respetive directory, no direct return values
+        
+        #NOTE: for faster debugging, use this command to remove .jpg file: 
+        #          find . -name \*.jpg -type f -delete
+
+        #vidpath = namespace.DIRPATH_YOUTUBE_VIDEOS
+
+        cmd_split_template = 'ffmpeg -i {} {}/temp%06d.jpg -hide_banner'
+        cmd_rm_template = ''
+        
+        #go through all mp4 videos in the folder specified by vid_dirpath
+        #split the videos, put frames in to folder has same name as the video
+        
+        for vidpath in glob.glob(vid_dirpath + '/*/*/*.mp4'):   
+            dirpath = vidpath.replace('.mp4', '')
+            print 'creating directory: {}'.format(dirpath)
+            os.system('mkdir {}'.format(dirpath))
+            print 'split videos into frame into directory above'
+            cmd_split = cmd_split_template.format(vidpath, dirpath)
+            os.system(cmd_split)
+        self.remove_refundant_frames(vid_dirpath)        
     
     def process_annotated_item(self, df, vid, cid0, oid):
         #TODO: find minimal time for the video segment, which uniquely defined by vid, cid, oid

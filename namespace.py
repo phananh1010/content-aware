@@ -86,6 +86,13 @@ VOC_CLASS_DICT = {0: "background",
 
 YOUTUBE_CLASS_DICT = {0: PERSON, 1: BIRD, 2: BICYCLE, 3: WATERCRAFT, 4: BUS, 5: 'bear', 6: COW, 7: CAT, 8: 'giraffe', 9: POTTEDPLANT, 10: HORSE, 11: MOTORCYCLE, 12: 'knife', 13: AIRPLANE, 14: 'skateboard', 15: TRAIN, 16: 'truck', 17: 'zebra', 18: 'toilet', 19: DOG, 20: 'elephant', 21: 'umbrella', 23: CAR}
 
+RESOLUTION_LIST=(1080, 1080, 1080, 1080, 1080, 1080, 1080, 720, 720, 720, 720, 720, 720, 720, 480, 480, 480, 480, 480, 480, 360, 360, 360, 360, 360, 240, 240, 240, 240, 144, 144, 144)
+BITRATE_LIST=('2048k', '1024k', '512k', '256k', '128k', '64k', '32k', '2048k', '1024k', '512k', '256k', '128k', '64k', '32k', '1024k', '512k', '256k', '128k', '64k', '32k', '512k', '256k', '128k', '64k', '32k', '256k', '128k', '64k', '32k', '128k', '64k', '32k')
+NO_RESOLUTION_LEVELS = len(RESOLUTION_LIST)
+
+##############################END OF DATA DECLARATION####################
+
+######ENVIRONMENT DECLARATION#######
 DIRPATH_HOME = '/home/u9167/content_aware'
 
 FILEPATH_IMAGENET_ANNOTATION = './imagenet_labels'                     #raw annotation IMAGE_NET VID
@@ -105,8 +112,12 @@ FILEPATH_SCRIPTS_GETINFO = DIRPATH_SCRIPTS + '/' + 'get_info.sh'
 
 FILEPATH_YOUTUBE_RAWANNOCSV = DIRPATH_YOUTUBE_DATA + '/' + 'yt_bb_detection_train_filtered.pkl.gz'
 FILEPATH_YOUTUBE_YANNODICT = DIRPATH_YOUTUBE_DATA + '/' + 'yanno_dict'
+#meta info about raw videos
 FILEPATH_YOUTUBE_VID_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'vid_metainfo.txt'
-
+#meta info about segment in different bitrate & resolutions
+FILEPATH_YOUTUBE_SEGMENT_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'segment_metainfo.txt' 
+#prediction results for each videos in the segment
+FILEPATH_YOUTUBE_SEGMENT_PREDRESULT = DIRPATH_YOUTUBE_DATA + '/' + 'segment_predresult.txt' 
 
 
 FILETEMPLATE_mAP_LINES = 'mAP_line_{}'

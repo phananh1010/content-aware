@@ -1,17 +1,17 @@
 #!/bin/bash
 #get all files in raw folder, change its resolution
-CURDIR=~/content_aware/scripts/
-ROOT=~/content_aware/data/VID_data/
-ROOT_RAW=${ROOT}raw/
-ROOT_SCALED=${ROOT}scaled/
+CURDIR=~/content_aware/scripts
+ROOT=~/content_aware/data/YOUTUBE_data
+ROOT_RAW=${ROOT}/videos
+ROOT_SCALED=${ROOT}/videos_scaled
 
 cd $ROOT
-for filepath in ${ROOT_RAW}*.mp4; do
+for filepath in ${ROOT_RAW}/*/*.mp4; do
     [ -e "$filepath" ] || continue
     echo "changing resolution to x360, x240, x144 for $filepath"
     #echo "test filename: ${filename/.mp4/_x360.mp4}"
     #algorithm: 
-    #  1) create directory named ./scaled/$filename
+    #  1) create directory named filepath/$filename
     #  2) split the vid into GOP segments
     #  3) change bitrate and resolution for individual segments
     #  4) create directory named ./scaled/$filename/frames
@@ -20,8 +20,10 @@ for filepath in ${ROOT_RAW}*.mp4; do
     #ffmpeg -i $filename -vf scale=-1:360 ${filename/.mp4/_x360.mp4}
     #ffmpeg -i $filename -vf scale=-2:240 ${filename/.mp4/_x240.mp4}
     #ffmpeg -i $filename -vf scale=-1:144 ${filename/.mp4/_x144.mp4}
+    
+    #filename is the file name with .mp4 extension
     filename=$(echo "$filepath" | sed "s/.*\///")
-    mkdir ${ROOT_SCALED}${filename/.mp4/}
+    mkdir ${ROOT_SCALED}/${filename/.mp4/}
     
     #another method. First, create uncompressed video, then measure the bitrate
     ffmpeg -i $filepath -an -c:v copy -segment_time 0.00001 -f segment ${ROOT_SCALED}${filename/.mp4/}/i%0d.mp4

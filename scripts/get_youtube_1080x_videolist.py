@@ -19,7 +19,7 @@ np.random.shuffle(id_list)
 print 'begin crawling'
 with open(HOME + 'youtube_1080_vidlist.txt', 'a') as f:
     url_template="http://www.youtube.com/watch?v={}"
-    for idx, vid in enumerate(id_list[87200:]):
+    for idx, vid in enumerate(id_list[143300:]):
         if idx % 100 == 0:
             print 'processing {}\t{}'.format(idx, vid)
         url = url_template.format(vid)
