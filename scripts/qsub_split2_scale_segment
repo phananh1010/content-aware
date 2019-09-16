@@ -1,0 +1,11 @@
+# PBS -l nodes=1,walltime=24:00:00
+cd $PBS_O_WORKDIR
+./split1_get_segment.sh 23
+./split2_scale_segment.sh 23
+#./split1_test.sh 21
+#./split2_test.sh 21
+
+
+
+#./split1_get_segment.sh  /home/u9167/content_aware/data/YOUTUBE_data/videos/23/\*.mp4
+#./split2_scale_segment.sh /home/u9167/content_aware/data/YOUTUBE_data/videos/23/\*.mp4

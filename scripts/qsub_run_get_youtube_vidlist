@@ -1,0 +1,5 @@
+# PBS -l nodes=1,walltime=24:00:00
+cd $PBS_O_WORKDIR
+
+conda activate env_torch
+python get_youtube_1080x_videolist.py

@@ -1,8 +1,8 @@
 #!/bin/bash
 #TODO: for the given video in different bitrate&resolution, now split the video into INDIVIDUAL frames. 
-#   Step 1: create a filders for each bitrate & resolution level
+#   Step 1: create a folder for each bitrate & resolution level
 #   step 2: split the videos into frames
-#INPUT: path to original mp4 videos
+#INPUT: path to list of .mp4 file to be executed ${1}
 #     the algorithm will point to the directory where file has been segmented and convert to different bitrates, resolution
 #OUTPUT: folders contain individual frames
 
@@ -25,7 +25,7 @@ declare -a arr_br=(2048k 1024k 512k 256k 128k 64k 32k
                                     128k 64k 32k
                    )
                                     
-echo ${1}
+TMP_CMDLIST=split2_cmdlist${1}.sh
 for filepath in ${1}; do
     [ -e "$filepath" ] || continue
     echo "splitting to frames for: $filepath"

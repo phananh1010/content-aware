@@ -14,7 +14,7 @@ import namespace
 
 LogParser = log_parser.LogParser()
 #ONLY run once
-LogParser.runsh_get_videometainfo(namespace.FILEPATH_SCRIPTS_GETINFO, namespace.DIRPATH_YOUTUBE_VIDEOS, namespace.FILEPATH_YOUTUBE_VID_METAINFO)
+#LogParser.runsh_get_videometainfo(namespace.FILEPATH_SCRIPTS_GETINFO, namespace.DIRPATH_YOUTUBE_VIDEOS, namespace.FILEPATH_YOUTUBE_VID_METAINFO)
 
 _, vidinfo_dict, _ = LogParser.parse_video_metainfo(namespace.FILEPATH_YOUTUBE_VID_METAINFO)
 YConverter = youtubebb_converter.YoutubeBBConverter(vidinfo_dict)
