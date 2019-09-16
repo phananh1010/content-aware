@@ -2,7 +2,12 @@ This is the instruction on how to use our scripts to split the videos into frame
 
 ## Overview
 There are four main steps:
-### Step 0: download original youtube videos, refer to the Tower machine
+### Step 0: download original youtube videos
+`Main sh` file: `split0_get_vidlist.sh`
+Refer to the Tower machine for downloaded vid, put to Intel Devcloud in this path:
+`.../content_aware/data/YOUTUBE_data/videos_bk/videos_bk/videos/yt_bb_detection_train/<CAT>/<vid_name>.mp4`
+Then run `split0_get_vidlist.sh` to put video filepaths into files inside `filelist` folder
+
 ### Step 1: split videos into GOP segment, this is necessary since each segment has different bitrates. From now on, the bitrate of any frames is the bitrate of the GOP segment in which it belongs to.
 `Main sh` file: `split1_get_segment.sh`
 ### Step 2: for each raw GOP segment, split into different bitrates & resolution levels.
