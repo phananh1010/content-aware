@@ -23,7 +23,6 @@ INPUT: all main sh file receive a list of videos to be executed.
 OUTPUT: the output are invidual .mp4 or frames, put into correponding folders in the following path
 ```.../content_aware/data/YOUTUBE_data/videos```
 
-
 ### `filelist` folder: 
 to create such filelist, execute this command:
 ```for f in /home/u9167/content_aware/data/YOUTUBE_data/videos/7/*.mp4; do printf "${f}\n" >> filelist/7.txt; done```
@@ -32,12 +31,18 @@ to create such filelist, execute this command:
 To utilize IntelDevcloud, use qsub scripts. The name of the qsub file is `qsub_run_get_youtube_vidlist`
 Inside the `qsub_run_get_youtube_vidlist` file, manually change the number to specify the video category. The qsub script will look into filelist folder, read all video files, and execute all `main sh` scripts.
 
+## Step-by-step
+### Step0, create a video filepath list inside scripts/filelist/ folder
+./split0_get_vidlist.sh 10
+
+### Step1&2, separate video into GOP segments, and create different bitrate, resolution versions for each GOP
+All can be done in one qsub sccript:
+qsub -v ID=10 qsub_split2_scale_segment
+
 ## Other misc
-
-### target dataset:
+### Target dataset:
 We are using the YOUTUBE dataset, which can be downloaded from [YouTube-BB](https://research.google.com/youtube-bb/) website. To extract only annotated video segments, we needed to expande this tool. Note: this tool use youtube-dl to download videos, however, it needs some modification to download the highest resolution. (Currently download 720p by default.)
-
-### extract list of 1080p video
+### Extract list of 1080p video
 Using `get_youtube_1080x_videolist.py`
 To utilize Intel DevCloud, use qsub script provided in `qsub_run_get_youtube_vidlist`
 
