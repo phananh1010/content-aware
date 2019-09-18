@@ -36,11 +36,24 @@ Inside the `qsub_run_get_youtube_vidlist` file, manually change the number to sp
 ```./split0_get_vidlist.sh 10```
 - Step1 separate video into GOP segments, and 
 ```./split1_get_segment.sh```
-- Step 2 create different bitrate, resolution versions for each GOP
+- Step2 create different bitrate, resolution versions for each GOP
 ```./split2_scale_segment.sh```
 
-From step1 to step 2 can be done by running following script in side ./scripts folder:
+From step0 to step 2 can be done by running following script in side ./scripts folder:
 ```qsub -v ID=10 qsub_split2_scale_segment```
+
+- Step3 collect segment video information such as filepath, bitrate, solution, duration, fps. Put into Python dict
+```
+import log_parser
+Parser = log_parser.LogParser()
+for ID in [0, 1, 10, 15, 19, 21 ,23, 4, 7]:
+    try:
+        Parser.parse_video_metainfo(ID)
+    except Exception, e:
+        print (e, 'SKIPPED ID={}'.format(ID))
+        continue
+```
+
 
 ## Other misc
 ### Target dataset:
