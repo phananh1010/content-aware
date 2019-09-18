@@ -38,19 +38,19 @@ To utilize IntelDevcloud, use qsub scripts. The name of the qsub file is `qsub_r
 Inside the `qsub_run_get_youtube_vidlist` file, manually change the number to specify the video category. The qsub script will look into filelist folder, read all video files, and execute all `main sh` scripts.
 
 ## Step-by-step
-- Step0 create a video filepath list inside scripts/filelist/ folder
+- 1) Step0 create a video filepath list inside scripts/filelist/ folder
 ```./split0_get_vidlist.sh 10```
 
-- Step1 separate video into GOP segments, and 
+- 2) Step1 separate video into GOP segments, and 
 ```./split1_get_segment.sh```
 
-- Step2 create different bitrate, resolution versions for each GOP
+- 3) Step2 create different bitrate, resolution versions for each GOP
 ```./split2_scale_segment.sh```
 
 From step0 to step 2 can be done by running following script in side ./scripts folder:
 ```qsub -v ID=10 qsub_split2_scale_segment```
 
-- Step3 collect segment video information such as filepath, bitrate, solution, duration, fps. Put into Python dict
+- 4) Collect segment video information such as filepath, bitrate, solution, duration, fps. Put into Python dict
 ```
 import log_parser
 Parser = log_parser.LogParser()
