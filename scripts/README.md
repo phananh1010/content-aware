@@ -68,6 +68,11 @@ To utilize the batch mode in Intel Devcloud, use qsub:
 qsub -v ID=${ID} qsub_split3_split_segment
 
 6) Filter out irrelevant frames
+Use python code in `split4_filter_frame.py` to filter out irrelevant/non annotated frames
+Note: the input is a mask reflect the original videos to be process. The example below is the wild card to all videos belong to CAT 15 (train):
+```/home/u9167/content_aware/data/YOUTUBE_data/videos/15/*.mp4``` #3zcr2YpUk1M+15+0
+
+After filtering, it is necessary to verify if the filtered frames actually match the annotation from Youtube-BB. Following step by step python instruction in `USAGE_verify_split3_frame_filtering.ipynb` file to retrive the data and visualize the bounding boxes on extracted/filtered frames
 
 
 
