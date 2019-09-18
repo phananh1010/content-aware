@@ -39,7 +39,7 @@ Inside the `qsub_run_get_youtube_vidlist` file, manually change the number to sp
 - Step 2 create different bitrate, resolution versions for each GOP
 ```./split2_scale_segment.sh```
 
-From step0 to step 2 can be done by running following script:
+From step1 to step 2 can be done by running following script in side ./scripts folder:
 ```qsub -v ID=10 qsub_split2_scale_segment```
 
 ## Other misc
