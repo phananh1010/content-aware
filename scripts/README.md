@@ -38,19 +38,19 @@ To utilize IntelDevcloud, use qsub scripts. The name of the qsub file is `qsub_r
 Inside the `qsub_run_get_youtube_vidlist` file, manually change the number to specify the video category. The qsub script will look into filelist folder, read all video files, and execute all `main sh` scripts.
 
 ## Step-by-step
-- 1) Step0 create a video filepath list inside scripts/filelist/ folder
-```./split0_get_vidlist.sh 10```
+1) Step0 create a video filepath list inside scripts/filelist/ folder
+```./split0_get_vidlist.sh ${ID}```
 
-- 2) Step1 separate video into GOP segments, and 
-```./split1_get_segment.sh```
+2) Step1 separate video into GOP segments, and 
+```./split1_get_segment.sh ${ID}```
 
-- 3) Step2 create different bitrate, resolution versions for each GOP
-```./split2_scale_segment.sh```
+3) Step2 create different bitrate, resolution versions for each GOP
+```./split2_scale_segment.sh ${ID}```
 
 From step0 to step 2 can be done by running following script in side ./scripts folder:
-```qsub -v ID=10 qsub_split2_scale_segment```
+```qsub -v ID=${ID} qsub_split2_scale_segment```
 
-- 4) Collect segment video information such as filepath, bitrate, solution, duration, fps. Put into Python dict
+4) Collect segment video information such as filepath, bitrate, solution, duration, fps. Put into Python dict
 ```
 import log_parser
 Parser = log_parser.LogParser()
@@ -61,6 +61,14 @@ for ID in [0, 1, 10, 15, 19, 21 ,23, 4, 7]:
         print (e, 'SKIPPED ID={}'.format(ID))
         continue
 ```
+5) Split the segment into frames
+```./split3_split_segment.sh ${ID}```
+
+To utilize the batch mode in Intel Devcloud, use qsub:
+qsub -v ID=${ID} qsub_split3_split_segment
+
+6) Filter out irrelevant frames
+
 
 
 ## Other misc
