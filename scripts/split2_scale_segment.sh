@@ -13,7 +13,7 @@
 HOME=~/content_aware
 DIR_YOUTUBE_VIDEO=${HOME}/data/YOUTUBE_data/videos
 DIR_SCRIPT=${HOME}/scripts
-TMP_CMDLIST=split2_cmdlist${1}.sh
+TMP_CMDLIST=${DIR_SCRIPT}/misc/split2_cmdlist${1}.sh
 
 declare -a arr_rs=(1080 1080 1080 1080 1080 1080 1080
                   720 720 720 720 720 720 720
@@ -50,7 +50,7 @@ declare -a arr_bf=(1024k 512k 256k 128k 64k 16k 8k
 cd $DIR_YOUTUBE_VIDEO
 #go through GOP segmented videos 
 #for filepath in ${1}
-rm ${DIR_SCRIPT}/${TMP_CMDLIST}
+rm ${TMP_CMDLIST}
 while read filepath; do 
     [ -e "$filepath" ] || continue
     echo "Converting this SOP segmented vid into bitrate & resolution: "
@@ -69,13 +69,13 @@ while read filepath; do
            bf=${arr_bf[$i]}
            out_filepath=${segpath/.mp4/_x${rs}_b${br}.mp4}
            echo "CMD: ffmpeg -i $segpath -vf scale=-2:${rs} -maxrate ${brm} -bufsize ${bf} ${out_filepath}"
-           echo "ffmpeg -i $segpath -vf scale=-2:${rs} -maxrate ${brm} -bufsize ${bf} ${out_filepath}" >> ${DIR_SCRIPT}/${TMP_CMDLIST}
+           echo "ffmpeg -i $segpath -vf scale=-2:${rs} -maxrate ${brm} -bufsize ${bf} ${out_filepath}" >> ${TMP_CMDLIST}
            
            #ffmpeg -i $segpath -vf scale=-2:${rs} -maxrate ${brm} -bufsize ${bf} ${out_filepath}
         done
      done
-done < /home/u9167/content_aware/scripts/filelist/${1}.txt
+done < ${DIR_SCRIPT}/filelist/${1}.txt
 #NOTE: filelist won't work, we need a list of segmented file
 
-chmod u+x ${DIR_SCRIPT}/${TMP_CMDLIST}
-${DIR_SCRIPT}/${TMP_CMDLIST}
+chmod u+x ${TMP_CMDLIST}
+${TMP_CMDLIST}

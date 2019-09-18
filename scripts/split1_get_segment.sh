@@ -5,16 +5,17 @@
 #           - create a folder with the same name as the video
 #           - create segments, output into the folder
 
-#USAGE:./split1_get_segment.sh  /home/u9167/content_aware/data/YOUTUBE_data/videos/\*/\*.mp4
+#USAGE(old):./split1_get_segment.sh  /home/u9167/content_aware/data/YOUTUBE_data/videos/\*/\*.mp4
+#USAGE(new):./split1_get_segment.sh  21
 
 HOME=~/content_aware
 DIR_YOUTUBE_VIDEO=${HOME}/data/YOUTUBE_data/videos
 DIR_SCRIPT=${HOME}/scripts
-TMP_CMDLIST=split1_cmdlist${1}.sh
+TMP_CMDLIST=${DIR_SCRIPT}/misc/split1_cmdlist${1}.sh
 
 cd $HOME
 
-rm ${DIR_SCRIPT}/${TMP_CMDLIST}
+rm ${TMP_CMDLIST}
 #for filepath in ${1}; do
 while read filepath; do 
     [ -e "$filepath" ] || continue
@@ -28,10 +29,10 @@ while read filepath; do
     
     #then, split the videos into segment, put into the newly created directory
     template_file=${dirpath}/i%03d.mp4
-    echo "ffmpeg -i $filepath -an -c:v copy -segment_time 0.00001 -f segment ${template_file}" >> ${DIR_SCRIPT}/${TMP_CMDLIST}
+    echo "ffmpeg -i $filepath -an -c:v copy -segment_time 0.00001 -f segment ${template_file}" >> ${TMP_CMDLIST}
     #rm ${template_file}
     #ffmpeg -i $filepath -an -c:v copy -segment_time 0.00001 -f segment ${template_file}
     echo "finished segmenting the $filepath"
-done < /home/u9167/content_aware/scripts/filelist/${1}.txt
-chmod u+x ${DIR_SCRIPT}/${TMP_CMDLIST}
-${DIR_SCRIPT}/${TMP_CMDLIST}
+done < ${DIR_SCRIPT}/filelist/${1}.txt
+chmod u+x ${TMP_CMDLIST}
+${TMP_CMDLIST}
