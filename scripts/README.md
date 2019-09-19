@@ -50,7 +50,9 @@ Inside the `qsub_run_get_youtube_vidlist` file, manually change the number to sp
 From step0 to step 2 can be done by running following script in side ./scripts folder:
 ```qsub -v ID=${ID} qsub_split2_scale_segment```
 
-4) Collect segment video information such as filepath, bitrate, solution, duration, fps. Put into Python dict
+4) Use ffmpeg to collect video information such as filepath, bitrate, solution, duration, fps. 
+Put into segmentinfo/ folders for each CAT ID
+5) Use Python to parse the collected segment video information in step (4), put into Python dict
 ```
 import log_parser
 Parser = log_parser.LogParser()
@@ -61,13 +63,13 @@ for ID in [0, 1, 10, 15, 19, 21 ,23, 4, 7]:
         print (e, 'SKIPPED ID={}'.format(ID))
         continue
 ```
-5) Split the segment into frames
+6) Split the segment into frames
 ```./split3_split_segment.sh ${ID}```
 
 To utilize the batch mode in Intel Devcloud, use qsub:
 qsub -v ID=${ID} qsub_split3_split_segment
 
-6) Filter out irrelevant frames
+7) Filter out irrelevant frames
 Use python code in `split4_filter_frame.py` to filter out irrelevant/non annotated frames
 Note: the input is a mask reflect the original videos to be process. The example below is the wild card to all videos belong to CAT 15 (train):
 ```/home/u9167/content_aware/data/YOUTUBE_data/videos/15/*.mp4``` #3zcr2YpUk1M+15+0
