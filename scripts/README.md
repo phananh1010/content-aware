@@ -74,6 +74,11 @@ Use python code in `split4_filter_frame.py` to filter out irrelevant/non annotat
 Note: the input is a mask reflect the original videos to be process. The example below is the wild card to all videos belong to CAT 15 (train):
 ```/home/u9167/content_aware/data/YOUTUBE_data/videos/15/*.mp4``` #3zcr2YpUk1M+15+0
 
+7B) Manually remove irrelevant frames (this additional step is needed)
+type following command to remove redundant frames, which previous step 7 missed
+```ls /home/u9167/content_aware/data/YOUTUBE_data/videos/<ID>/*/*/????????.jpg```
+The command remove all .jpg files has length of 8
+
 After filtering, it is necessary to verify if the filtered frames actually match the annotation from Youtube-BB. Following step by step python instruction in `USAGE_verify_split3_frame_filtering.ipynb` file to retrive the data and visualize the bounding boxes on extracted/filtered frames
 
 
