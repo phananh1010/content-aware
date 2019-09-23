@@ -109,6 +109,9 @@ DIRPATH_YOUTUBE_DATA = DIRPATH_DATA + '/' + 'YOUTUBE_data'
 DIRPATH_YOUTUBE_VIDEOS = DIRPATH_YOUTUBE_DATA + '/' + 'videos'
 
 FILEPATH_SCRIPTS_GETINFO = DIRPATH_SCRIPTS + '/' + 'get_info.sh'
+FILEPATH_SCRIPTS_SPLIT1 = DIRPATH_SCRIPTS + '/' + 'split1_get_segment.sh'
+FILEPATH_SCRIPTS_SPLIT2 = DIRPATH_SCRIPTS + '/' + 'split2_scale_segment.sh'
+FILEPATH_SCRIPTS_SPLIT3 = DIRPATH_SCRIPTS + '/' + 'split3_split_segment.sh'
 
 FILEPATH_YOUTUBE_RAWANNOCSV = DIRPATH_YOUTUBE_DATA + '/' + 'yt_bb_detection_train_filtered.pkl.gz'
 FILEPATH_YOUTUBE_YANNODICT = DIRPATH_YOUTUBE_DATA + '/' + 'yanno_dict'
@@ -119,6 +122,8 @@ FILEPATH_YOUTUBE_SEGMENT_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'segment_metain
 #prediction results for each videos in the segment
 FILEPATH_YOUTUBE_SEGMENT_PREDRESULT = DIRPATH_YOUTUBE_DATA + '/' + 'segment_predresult.txt' 
 
-
 FILETEMPLATE_mAP_LINES = 'mAP_line_{}'
 FILETEMPLATE_FRAMEID = '{0:06d}'
+FILETEMPLATE_FRAMEVERSION = 'frames_x{}_b{}'
+
+FRAMEVERSION_BEST = 'frames_x1080_b1024k'
