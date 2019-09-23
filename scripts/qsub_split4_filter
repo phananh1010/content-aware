@@ -1,0 +1,10 @@
+# PBS -l nodes=1:ppn=2,walltime=24:00:00
+
+#NOTE: need to provide ID.
+#example code: qsub -v ID=23 qsub_split2_scale_segment
+cd /home/u9167/content_aware
+
+echo "#############################" >> log.txt
+echo "These commands are being run:" >> log.txt
+echo "python split4_filter_frame.py ${ID}" >> log.txt
+python split4_filter_frame.py ${ID}

@@ -1,0 +1,17 @@
+# PBS -l nodes=1:ppn=2,walltime=24:00:00
+
+#NOTE: need to provide ID.
+#example code: qsub -v ID=23 qsub_split2_scale_segment
+cd $PBS_O_WORKDIR
+
+echo "#############################" >> log.txt
+echo "These commands are being run:" >> log.txt
+#echo "./split0_get_vidlist.sh ${ID}" >> log.txt
+echo "./split1_get_segment.sh ${ID}" >> log.txt
+echo "./split2_scale_segment.sh ${ID}" >> log.txt
+#./split0_get_vidlist.sh ${ID}
+./split1_get_segment.sh ${ID}
+./split2_scale_segment.sh ${ID}
+
+#./split1_get_segment.sh  /home/u9167/content_aware/data/YOUTUBE_data/videos/23/\*.mp4
+#./split2_scale_segment.sh /home/u9167/content_aware/data/YOUTUBE_data/videos/23/\*.mp4
