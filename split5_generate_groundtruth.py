@@ -114,13 +114,15 @@ try:
 except:
     print ('ERROR, no file found, will use default empty dic')
     
-
 for vid_filepath in glob.glob(vidmask):
     if vid_filepath in gt_dict: 
         print ("SKIPPED {}".format(vid_filepath))
         continue
     print ('processing {}'.format(vid_filepath))
-    k, v = generate_viditem_groundtruth(vid_filepath, Pred)
-    gt_dict[k] = v
-    
-pickle.dump(gt_dict, open(GROUNDTRUTH_DICT_FILEPATH, 'w'))
+    try:
+        k, v = generate_viditem_groundtruth(vid_filepath, Pred)
+        gt_dict[k] = v
+        pickle.dump(gt_dict, open(GROUNDTRUTH_DICT_FILEPATH, 'w'))
+    except: 
+        print ("SKIPPED {} EXCEPTION".format(vid_filepath))
+        continue
