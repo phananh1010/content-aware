@@ -74,7 +74,7 @@ Use python code in `split4_filter_frame.py` to filter out irrelevant/non annotat
 Note: the input is a mask reflect the original videos to be process. The example below is the wild card to all videos belong to CAT 15 (train):
 ```/home/u9167/content_aware/data/YOUTUBE_data/videos/15/*.mp4``` #3zcr2YpUk1M+15+0
 
-7B) Manually remove irrelevant frames (this additional step is needed)
+7) (B) Manually remove irrelevant frames (this additional step is needed)
 Type following command to remove redundant frames, which previous step 7 missed
 ```ls /home/u9167/content_aware/data/YOUTUBE_data/videos/<ID>/*/*/????????.jpg```
 The command remove all .jpg files has length of 8
