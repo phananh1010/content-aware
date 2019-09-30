@@ -87,6 +87,10 @@ User either following command since the processing time is quick
 or
 ```qsub qsub_split5_get_groundtruth```
 
+9) Export the frames in best quality, along with ground truth from previous step for the dataset.
+To execute the scripts, follow the instruction in the `USAGE_split6_export_dataset`. 
+The results will be exported into the `/home/u9167/content_aware/export` folder.
+
 
 
 ## Other misc
