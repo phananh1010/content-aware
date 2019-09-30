@@ -88,8 +88,10 @@ or
 ```qsub qsub_split5_get_groundtruth```
 
 9) Export the frames in best quality, along with ground truth from previous step for the dataset.
-To execute the scripts, follow the instruction in the `USAGE_split6_export_dataset`. 
+9.1) To copy the frames , follow the instruction in the `USAGE_split6_export_dataset`. 
 The results will be exported into the `/home/u9167/content_aware/export` folder.
+9.1) To copy groundtruth into export folder, execute this command:
+```cp /home/u9167/content_aware/data/YOUTUBE_data/_groundtruth_dict_* /home/u9167/content_aware/export/```
 
 
 
