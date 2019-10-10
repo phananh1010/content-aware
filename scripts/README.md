@@ -56,16 +56,9 @@ Put into segmentinfo/ folders for each CAT ID
 ```getmeta1_extractinfo.sh <ID>```
 
 5) Use Python to parse the collected segment video information in step (4), put into Python dict
-```
-import log_parser
-Parser = log_parser.LogParser()
-for ID in [0, 1, 10, 15, 19, 21 ,23, 4, 7]:
-    try:
-        Parser.parse_video_metainfo(ID)
-    except Exception, e:
-        print (e, 'SKIPPED ID={}'.format(ID))
-        continue
-```
+Following instructions in the `USAGE_parser.ipynb` files.
+
+
 6) Split the segment into frames
 ```./split3_split_segment.sh ${ID}```
 
