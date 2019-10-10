@@ -52,6 +52,9 @@ From step0 to step 2 can be done by running following script in side ./scripts f
 
 4) Use ffmpeg to collect video information such as filepath, bitrate, solution, duration, fps. 
 Put into segmentinfo/ folders for each CAT ID
+```getmeta0_segmentlist.sh <ID>```
+```getmeta1_extractinfo.sh <ID>```
+
 5) Use Python to parse the collected segment video information in step (4), put into Python dict
 ```
 import log_parser
