@@ -74,7 +74,9 @@ Note: the input is a mask reflect the original videos to be process. The example
 
 7) (B) Manually remove irrelevant frames (this additional step is needed)
 Type following command to remove redundant frames, which previous step 7 missed
+
 ```ls /home/u9167/content_aware/data/YOUTUBE_data/videos/<ID>/*/*/????????.jpg```
+
 The command remove all .jpg files has length of 8
 
 After filtering, it is necessary to verify if the filtered frames actually match the annotation from Youtube-BB. Following step by step python instruction in `USAGE_verify_split3_frame_filtering.ipynb` file to retrive the data and visualize the bounding boxes on extracted/filtered frames
