@@ -60,6 +60,8 @@ Second script receives input from first scrips, and output meta info files insid
 5) Use Python to parse the collected segment video information in step (4), put into Python dict
 Following instructions in the `USAGE_parser.ipynb` files.
 
+Note: step (4) & (5) can be completed using `qsub_getmeta` script.
+```qsub -v ID=<ID> qsub_getmeta```
 
 6) Split the segment into frames
 ```./split3_split_segment.sh ${ID}```
