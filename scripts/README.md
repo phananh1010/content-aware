@@ -52,17 +52,17 @@ From step0 to step 2 can be done by running following script in side ./scripts f
 
 4) Use ffmpeg to collect video information such as filepath, bitrate, solution, duration, fps. 
 Put into segmentinfo/ folders for each CAT ID
+First script receives input from `filelist`, which is a list of videos to be processed, and generate list of segments in `segmentlist` directory.
+```getmeta0_segmentlist.sh <ID>```
+Second script receives input from first scrips, and output meta info files inside `segmentinfo` directory.
+```getmeta1_extractinfo.sh <ID>```
+
 5) Use Python to parse the collected segment video information in step (4), put into Python dict
-```
-import log_parser
-Parser = log_parser.LogParser()
-for ID in [0, 1, 10, 15, 19, 21 ,23, 4, 7]:
-    try:
-        Parser.parse_video_metainfo(ID)
-    except Exception, e:
-        print (e, 'SKIPPED ID={}'.format(ID))
-        continue
-```
+Following instructions in the `USAGE_parser.ipynb` files.
+
+Note: step (4) & (5) can be completed using `qsub_getmeta` script.
+```qsub -v ID=<ID> qsub_getmeta```
+
 6) Split the segment into frames
 ```./split3_split_segment.sh ${ID}```
 
@@ -76,7 +76,9 @@ Note: the input is a mask reflect the original videos to be process. The example
 
 7) (B) Manually remove irrelevant frames (this additional step is needed)
 Type following command to remove redundant frames, which previous step 7 missed
+
 ```ls /home/u9167/content_aware/data/YOUTUBE_data/videos/<ID>/*/*/????????.jpg```
+
 The command remove all .jpg files has length of 8
 
 After filtering, it is necessary to verify if the filtered frames actually match the annotation from Youtube-BB. Following step by step python instruction in `USAGE_verify_split3_frame_filtering.ipynb` file to retrive the data and visualize the bounding boxes on extracted/filtered frames
