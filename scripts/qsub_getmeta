@@ -1,4 +1,4 @@
-# PBS -l nodes=1,walltime=24:00:00
+#PBS -l nodes=1:ppn=2,walltime=23:23:23
 
 #NOTE: need to provide ID.
 #example code: qsub -v ID=23 getmeta1_extractinfo.sh
@@ -8,5 +8,8 @@ echo "#############################" >> log.txt
 echo "These commands are being run:" >> log.txt
 echo "./getmeta0_segmentlist.sh ${ID}" >> log.txt
 echo "./getmeta1_extractinfo.sh ${ID}" >> log.txt
-./getmeta0_extractinfo.sh ${ID}
+./getmeta0_segmentlist.sh ${ID}
 ./getmeta1_extractinfo.sh ${ID}
+cd /home/u9167/content_aware
+python getmeta2_parse.py ${ID}
+

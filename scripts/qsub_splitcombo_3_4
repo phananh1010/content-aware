@@ -1,0 +1,14 @@
+#PBS -l nodes=1:ppn=2,walltime=23:00:00
+#TODO: Combine codes from split3 & split4, look at the ./filelist/${ID}.txt to determine the video to be splitted
+#NOTE: need to provide ID.
+#example code: qsub -v ID=23 qsub_split2_scale_segment
+cd $PBS_O_WORKDIR
+
+echo "#############################" >> log.txt
+echo echo "These commands are being run:" >> log.txt
+echo "./split3_split_segment.sh ${ID}" >> log.txt
+
+./split3_split_segment.sh ${ID}
+
+cd /home/u9167/content_aware
+python split4_filter_frame.py ${ID}
