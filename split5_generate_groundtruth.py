@@ -9,10 +9,8 @@ import sys
 import namespace
 import log_parser
 import youtubebb_converter
-import imagenet_converter
-import dataset_generator
 import metric_map
-import predictor
+import predictor2
 import utils
 def get_groundtruth_item(img_filepath, vid_filepath, pred):
     #TODO: 
@@ -56,7 +54,7 @@ def generate_viditem_groundtruth(vidpath, pred):
         try:
             gt_list = get_all_frameversions(framepath, vidpath, pred)
         except:
-            print 'ERROR: ', framepath, vidpath
+            print ('ERROR: ', framepath, vidpath)
             raise
         result[framepath] = gt_list
     return vidpath, result
@@ -69,15 +67,15 @@ vidinfo_dict= LogParser.load_metainfo_dict()
 
 YConverter = youtubebb_converter.YoutubeBBConverter(vidinfo_dict)
 mAP = metric_map.mAP()
-Pred  = predictor.Predictor()
+pred300 = predictor2.Predictor('300')
+pred512 = predictor2.Predictor('512')
 
 #only run once to create processed Youtube annotation dict, write to FILEPATH_YOUTUBE_YANNODICT
 #YConverter.parse_annotation(namespace.FILEPATH_YOUTUBE_RAWANNOCSV, namespace.FILEPATH_YOUTUBE_YANNODICT)
 yanno, yanno_dict = YConverter.load_annotation(namespace.FILEPATH_YOUTUBE_YANNODICT)
-DatGen = dataset_generator.DatasetGenerator(YConverter, mAP, Pred, yanno_dict)
 
 #for debuging purpose only
-df = pd.DataFrame.from_csv('./data/YOUTUBE_data/yt_bb_detection_train.csv', header=None)
+df = pd.read_csv('./data/YOUTUBE_data/yt_bb_detection_train.csv', header=None)
 df1 = pd.read_pickle('./data/YOUTUBE_data/yt_bb_detection_train_filtered.pkl.gz', compression='gzip')
                             #./data/YOUTUBE_data/yt_bb_detection_train_filtered.csv
 
@@ -89,9 +87,9 @@ vidmask = namespace.DIRPATH_YOUTUBE_VIDEOS + '/{}/'.format(ID) + '*.mp4'
 
 gt_dict = {}
 try:
-    gt_dict = pickle.load(open(GROUNDTRUTH_DICT_FILEPATH))
-except:
-    print 'ERROR, no file found, will use default empty dic'
+    gt_dict = pickle.load(open(GROUNDTRUTH_DICT_FILEPATH, 'rb'))
+except Exception as ex:
+    print ('ERROR, no file found, will use default empty dic, {}'.format(ex))
     
 
 for vid_filepath in glob.glob(vidmask):
@@ -100,9 +98,14 @@ for vid_filepath in glob.glob(vidmask):
         continue
     print ('processing {}'.format(vid_filepath))
     try:
-        k, v = generate_viditem_groundtruth(vid_filepath, Pred)
-        gt_dict[k] = v
-        pickle.dump(gt_dict, open(GROUNDTRUTH_DICT_FILEPATH, 'w'))
-    except: 
-        print ("SKIPPED {} EXCEPTION".format(vid_filepath))
+        k300, v300 = generate_viditem_groundtruth(vid_filepath, pred300)
+        k512, v512 = generate_viditem_groundtruth(vid_filepath, pred512)
+        gt_dict[k] = (v300, v512)
+        
+        if k300 != k512: 
+            raise
+        pickle.dump(gt_dict, open(GROUNDTRUTH_DICT_FILEPATH, 'wb'))
+    except Exception as ex: 
+        print ("SKIPPED {} EXCEPTION: {}".format(vid_filepath, ex))
         continue
+    
