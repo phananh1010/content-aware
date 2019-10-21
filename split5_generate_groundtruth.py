@@ -100,7 +100,7 @@ for vid_filepath in glob.glob(vidmask):
     try:
         k300, v300 = generate_viditem_groundtruth(vid_filepath, pred300)
         k512, v512 = generate_viditem_groundtruth(vid_filepath, pred512)
-        gt_dict[k] = (v300, v512)
+        gt_dict[k300] = (v300, v512)
         
         if k300 != k512: 
             raise
