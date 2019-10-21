@@ -100,3 +100,26 @@ def create_ftoken(dtoken, idx):
         #INPUT: dir-token from above function, timestamp related to the annotation
         #OUTPUT: file-token, format dirtoken+timestamp
         return '{}+{}'.format(dtoken, int(idx))     
+    
+def plot_bbox(plt, rgb_img, pred_item):
+
+        _, cid, score, xmin, ymin, xmax, ymax = pred_item
+        cname = namespace.CLASS_INDEX[cid]
+
+        scale = np.array(rgb_img.shape[1::-1]+rgb_img.shape[1::-1])#[1::-1])
+        label_name = cname
+        display_txt = '%s: %.2f'%(label_name, score)
+        detection = np.array([xmin, ymin, xmax, ymax])
+        pt = detection * scale#(detection*scale).cpu().numpy()
+        coords = (pt[0], pt[1]), pt[2]-pt[0]+1, pt[3]-pt[1]+1
+
+        colors = plt.cm.hsv(np.linspace(0, 1, 21)).tolist()
+        color = colors[0]
+
+        plt.imshow(rgb_img)
+
+        if len(pred_item) > 0:
+            currentAxis = plt.gca()
+            currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
+        plt.axis('off')
+        plt.figure()      

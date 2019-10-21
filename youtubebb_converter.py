@@ -37,34 +37,34 @@ class YoutubeBBConverter(object):
         #target_dirpath is path to specific bitrate & resolution
         #ex: namespace.namespace.DIRPATH_YOUTUBE_VIDEOS + '/0/95Gh1o1M94s+0+1/frames_x720_b1024k'
 
-        for img_idx, imgpath in enumerate(sorted(glob.glob(target_dirpath + '/' + '*.jpg'))): 
+        for img_idx, imgpath in enumerate(sorted(glob.glob(target_dirpath + '/' + '???????.jpg'))): 
             if int(round((img_idx+1) % fps)) == 0 or img_idx == 0:
                 #imgdirpath, imgname_old = os.path.dirname(imgpath), os.path.basename(imgpath)
                 imgname_new = namespace.FILETEMPLATE_FRAMEID.format(int(round((img_idx+1) / fps))) + '.jpg'
                 imgpath_new = target_dirpath + '/' + imgname_new
-                print 'mv {} {}'.format(imgpath, imgpath_new)
+                print ('mv {} {}'.format(imgpath, imgpath_new))
                 os.system('mv {} {}'.format(imgpath, imgpath_new))
         #after all selected image has been moved, now remove redundant images
         #the redundant images has lenghth of 7, while moved files has length of 6
         cmdstr_rmv = 'rm {}'.format(target_dirpath + '/' + '???????.jpg')
-        print 'EXECUTE CMD: {}'.format(cmdstr_rmv)
+        print ('EXECUTE CMD: {}'.format(cmdstr_rmv))
         os.system(cmdstr_rmv)
 
-    def remove_refundant_frames(self, vid_wildcard):
+    def remove_redundant_frames(self, vid_wildcard):
         #TODO: remove frames not annotated (in .csv files). 
         #        check if frame idx is divisible to 30 or not. If not, remove
         #INPUT: dir path to the folder containing the videos
         #       #vid_wildcard = namespace.DIRPATH_YOUTUBE_VIDEOS + '/*/*.mp4'
         #OUTPUT: removed frames from specified folders
-        for vidpath in glob.glob(vid_wildcard):
-            vid_dirpath, _ = os.path.splitext(vidpath)  #
+        for vidpath in glob.glob(vid_wildcard):         #from given video
+            vid_dirpath, _ = os.path.splitext(vidpath)  #get the directory path (no .mp4 part)
             vidname = os.path.split(vid_dirpath)[1]     #example: 95Gh1o1M94s+0+1
             for i in range(self._N):
                 rs = self._arr_rs[i]
                 br = self._arr_br[i]
                 target_dirpath = vid_dirpath + '/' + 'frames_x{}_b{}'.format(rs, br)
-                fps = self._vidinfo_dict[vidname][2]
-                print 'PROCESSING: {}'.format(target_dirpath)
+                fps = self._vidinfo_dict[vidname][self._vidinfo_dict[vidname].keys()[0]][2]
+                print ('PROCESSING: {}'.format(target_dirpath))
                 self.remove_redundant_frames_with_targetdirpath(target_dirpath, fps)
     
     def create_frame_from_vid(self, vid_dirpath):
@@ -85,9 +85,9 @@ class YoutubeBBConverter(object):
         
         for vidpath in glob.glob(vid_dirpath + '/*/*/*.mp4'):   
             dirpath = vidpath.replace('.mp4', '')
-            print 'creating directory: {}'.format(dirpath)
+            print ('creating directory: {}'.format(dirpath))
             os.system('mkdir {}'.format(dirpath))
-            print 'split videos into frame into directory above'
+            print ('split videos into frame into directory above')
             cmd_split = cmd_split_template.format(vidpath, dirpath)
             os.system(cmd_split)
         self.remove_refundant_frames(vid_dirpath)
@@ -110,9 +110,9 @@ class YoutubeBBConverter(object):
         
         for vidpath in glob.glob(vid_dirpath + '/*/*/*.mp4'):   
             dirpath = vidpath.replace('.mp4', '')
-            print 'creating directory: {}'.format(dirpath)
+            print ('creating directory: {}'.format(dirpath))
             os.system('mkdir {}'.format(dirpath))
-            print 'split videos into frame into directory above'
+            print ('split videos into frame into directory above')
             cmd_split = cmd_split_template.format(vidpath, dirpath)
             os.system(cmd_split)
         self.remove_refundant_frames(vid_dirpath)        
@@ -190,11 +190,11 @@ class YoutubeBBConverter(object):
             yanno_dict[dtoken] = yanno_item
             yanno += yanno_item.values()
         
-        pickle.dump((yanno, yanno_dict), open(filepath_out, 'w'))
+        pickle.dump((yanno, yanno_dict), open(filepath_out, 'wb'))
 
     
     def load_annotation(self, filepath):
-        yanno, yanno_dict = pickle.load(open(filepath))
+        yanno, yanno_dict = pickle.load(open(filepath, 'rb'))
         return yanno, yanno_dict
     
     

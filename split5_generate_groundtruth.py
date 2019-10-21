@@ -14,29 +14,6 @@ import dataset_generator
 import metric_map
 import predictor
 import utils
-
-def plot_bbox(rgb_img, pred_item, color_idx=0):
-    _, cid, score, xmin, ymin, xmax, ymax = pred_item
-    cname = namespace.CLASS_INDEX[cid]
-    
-    scale = np.array(rgb_img.shape[1::-1]+rgb_img.shape[1::-1])#[1::-1])
-    label_name = cname
-    display_txt = '%s: %.2f'%(label_name, score)
-    detection = np.array([xmin, ymin, xmax, ymax])
-    pt = detection * scale#(detection*scale).cpu().numpy()
-    coords = (pt[0], pt[1]), pt[2]-pt[0]+1, pt[3]-pt[1]+1
-    
-    colors = plt.cm.hsv(np.linspace(0, 1, 21)).tolist()
-    color = colors[0]
-
-    plt.imshow(rgb_img)
-    
-    if len(pred_item) > 0:
-        currentAxis = plt.gca()
-        currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
-    plt.axis('off')
-    plt.figure()
-    
 def get_groundtruth_item(img_filepath, vid_filepath, pred):
     #TODO: 
     img = cv2.imread(img_filepath, cv2.IMREAD_COLOR)
@@ -84,6 +61,8 @@ def generate_viditem_groundtruth(vidpath, pred):
         result[framepath] = gt_list
     return vidpath, result
 
+#in order for log_parser to work, previous steps are assumed to be taken.
+#see https://github.com/phananh1010/content-aware/tree/master/scripts for further detail
 
 LogParser = log_parser.LogParser()
 vidinfo_dict= LogParser.load_metainfo_dict()
@@ -104,7 +83,7 @@ df1 = pd.read_pickle('./data/YOUTUBE_data/yt_bb_detection_train_filtered.pkl.gz'
 
 ID = sys.argv[1]
     
-_GROUNDTRUTH_DICT_TEMPLATE_ = namespace.DIRPATH_YOUTUBE_DATA + '/' + '_groundtruth_dict_{}_'
+_GROUNDTRUTH_DICT_TEMPLATE_ = namespace.GROUNDTRUTH_DICT_TEMPLATE
 GROUNDTRUTH_DICT_FILEPATH = _GROUNDTRUTH_DICT_TEMPLATE_.format(ID)
 vidmask = namespace.DIRPATH_YOUTUBE_VIDEOS + '/{}/'.format(ID) + '*.mp4'
 
@@ -112,8 +91,9 @@ gt_dict = {}
 try:
     gt_dict = pickle.load(open(GROUNDTRUTH_DICT_FILEPATH))
 except:
-    print ('ERROR, no file found, will use default empty dic')
+    print 'ERROR, no file found, will use default empty dic'
     
+
 for vid_filepath in glob.glob(vidmask):
     if vid_filepath in gt_dict: 
         print ("SKIPPED {}".format(vid_filepath))

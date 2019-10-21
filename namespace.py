@@ -27,7 +27,7 @@ BBOX_MATCH_FP = 'false_positive'
 
 #IOU THRESHOLD
 THRESHOLD_IOU = .5
-THRESHOLD_CONFIDENCE = 0.3
+THRESHOLD_CONFIDENCE = 0.55
 
 VID_CLASS_DICT = {
                     'n02691156': AIRPLANE,
@@ -115,12 +115,19 @@ FILEPATH_SCRIPTS_SPLIT3 = DIRPATH_SCRIPTS + '/' + 'split3_split_segment.sh'
 
 FILEPATH_YOUTUBE_RAWANNOCSV = DIRPATH_YOUTUBE_DATA + '/' + 'yt_bb_detection_train_filtered.pkl.gz'
 FILEPATH_YOUTUBE_YANNODICT = DIRPATH_YOUTUBE_DATA + '/' + 'yanno_dict'
+#these lines are commented in Oct 1, 2019 to check if these variables are still used.
+#   If there is no error occured during the running for video ID=0 and others, they will be erased.
 #meta info about raw videos
-FILEPATH_YOUTUBE_VID_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'vid_metainfo.txt'
+#FILEPATH_YOUTUBE_VID_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'vid_metainfo.txt'
 #meta info about segment in different bitrate & resolutions
-FILEPATH_YOUTUBE_SEGMENT_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'segment_metainfo.txt' 
+#FILEPATH_YOUTUBE_SEGMENT_METAINFO = DIRPATH_YOUTUBE_DATA + '/' + 'segment_metainfo.txt' 
 #prediction results for each videos in the segment
-FILEPATH_YOUTUBE_SEGMENT_PREDRESULT = DIRPATH_YOUTUBE_DATA + '/' + 'segment_predresult.txt' 
+#FILEPATH_YOUTUBE_SEGMENT_PREDRESULT = DIRPATH_YOUTUBE_DATA + '/' + 'segment_predresult.txt' 
+
+####wildcard to access groundtruth######################
+GROUNDTRUTH_DICT_TEMPLATE = DIRPATH_YOUTUBE_DATA + '/' + '_groundtruth_dict_{}_'
+####directory where exported dataset will be placed#####
+DIRPATH_EXPORT_DATASET = DIRPATH_HOME + '/' + 'export'
 
 FILETEMPLATE_mAP_LINES = 'mAP_line_{}'
 FILETEMPLATE_FRAMEID = '{0:06d}'

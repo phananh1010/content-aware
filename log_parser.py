@@ -16,15 +16,15 @@ class LogParser(object):
     def __init__(self):
         #try to open specified file, if not exist, then create such file
         try:
-            tmp = pickle.load(open(self._VID_METAINFO_DICT_FILEPATH))
+            tmp = pickle.load(open(self._VID_METAINFO_DICT_FILEPATH, 'rb'))
         except Exception as inst:
             print (type(inst), inst.args)#, inst))
             print ('Continue..., will create empty metainfo_dict file')
-            pickle.dump({}, open(self._VID_METAINFO_DICT_FILEPATH, 'w'))
+            pickle.dump({}, open(self._VID_METAINFO_DICT_FILEPATH, "wb"))
         return
     
     def load_metainfo_dict(self):
-        vid_metainfo = pickle.load(open(self._VID_METAINFO_DICT_FILEPATH))
+        vid_metainfo = pickle.load(open(self._VID_METAINFO_DICT_FILEPATH, 'rb'))
         return vid_metainfo
     
     def parse_item(self, item):
@@ -82,7 +82,7 @@ class LogParser(object):
             vid_metainfo[k1][k2] = v
         
         #write back the dictionary to file
-        pickle.dump(vid_metainfo, open(self._VID_METAINFO_DICT_FILEPATH, 'w'))
+        pickle.dump(vid_metainfo, open(self._VID_METAINFO_DICT_FILEPATH, "wb"))
         return vid_metainfo
     
     #OLD CODE, NEED CHANGE

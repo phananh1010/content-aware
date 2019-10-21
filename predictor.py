@@ -58,6 +58,4 @@ class Predictor(object):
                     continue
                 hi, wi, dh, dw = predictions[0, idx_vocobj, idx_bbox, 1:].numpy()
                 result.append([0, idx_class, score, hi, wi, dh, dw])
-
-        
         return result
