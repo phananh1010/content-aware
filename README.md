@@ -16,8 +16,8 @@ To fix this issuse, remove best parameter, and adding -c to the end of the scrip
 Location: inside function dl_and_cut, located in the youtube_bb.py file
 
 STEP2: split the video segment
-The videos are localed inside ./data/YOUTUBE_data/videos, store in separated directory. Each directory is named after the class ID.
-run ./scripts/split_vid.sh to split the videos into multiple bitrates and resolutions
+The videos are localed inside ./data/YOUTUBE_data/videos, store in separated directory. Each directory is named after the class ID. Currently, there are 13 class IDs: 0: PERSON, 1: BIRD, 2: BICYCLE, 3: WATERCRAFT, 4: BUS, 6: COW, 7: CAT, 10: HORSE, 11: MOTORCYCLE, 13: AIRPLANE, 15: TRAIN, 19: DOG, 23: CAR
+run ./scripts/split_vid.sh to split the videos into multiple bitrates and resolutions.
 
 STEP3: split transformed videos into image frames
 
