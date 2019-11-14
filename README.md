@@ -1,6 +1,5 @@
-This repository contain source code to train a DCNN to predict the performance of machine learning model.
 # content-aware
-content-aware-dcnn
+This repository contain source code to create the dataset for the content-aware DCNN.
 
 NOTE: 
 1) download the weights for SSD model [here](https://drive.google.com/file/d/1L7lgaMatPSv-yCMA-Eh_GshJJIaO2vvK/view?usp=sharing) or [here](https://drive.google.com/open?id=1_YhuoPLxQI580J_RiYxcP9lW2kV-pdgf) and put into the ./weights directory
